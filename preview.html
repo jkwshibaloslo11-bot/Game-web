@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Tap Target Game</title>
+<style>
+body{
+    text-align:center;
+    font-family:Arial;
+    background:#1e1e2f;
+    color:white;
+}
+
+#gameArea{
+    width:90%;
+    max-width:400px;
+    height:400px;
+    margin:auto;
+    border:3px solid white;
+    position:relative;
+    background:#2c2c54;
+}
+
+.target{
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    background:red;
+    position:absolute;
+    cursor:pointer;
+}
+
+button{
+    padding:10px 20px;
+    font-size:18px;
+    margin:10px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🎯 Tap Target Game</h1>
+<p>Tekan lingkaran merah secepat mungkin!</p>
+
+<h2>Score: <span id="score">0</span></h2>
+<h2>Time: <span id="time">30</span></h2>
+
+<button onclick="startGame()">Start Game</button>
+
+<div id="gameArea"></div>
+
+<script>
+
+let score = 0
+let time = 30
+let gameInterval
+let spawnInterval
+
+function startGame(){
+
+score = 0
+time = 30
+
+document.getElementById("score").innerText = score
+document.getElementById("time").innerText = time
+
+spawnInterval = setInterval(spawnTarget,800)
+
+gameInterval = setInterval(()=>{
+time--
+document.getElementById("time").innerText = time
+
+if(time<=0){
+clearInterval(gameInterval)
+clearInterval(spawnInterval)
+alert("Game Over! Score kamu: "+score)
+document.getElementById("gameArea").innerHTML=""
+}
+
+},1000)
+
+}
+
+function spawnTarget(){
+
+let gameArea = document.getElementById("gameArea")
+
+let target = document.createElement("div")
+target.classList.add("target")
+
+let x = Math.random()*350
+let y = Math.random()*350
+
+target.style.left = x+"px"
+target.style.top = y+"px"
+
+target.onclick = function(){
+score++
+document.getElementById("score").innerText = score
+target.remove()
+}
+
+gameArea.appendChild(target)
+
+setTimeout(()=>{
+if(target.parentNode){
+target.remove()
+}
+},700)
+
+}
+
+</script>
+
+</body>
+</html>
